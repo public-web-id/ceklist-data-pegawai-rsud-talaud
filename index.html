@@ -302,12 +302,15 @@
                         <!-- Daftar item akan di-generate oleh JavaScript -->
                     </ul>
                 </div>
-                <div class="card-footer text-end p-2 d-flex justify-content-between">
+                <div class="card-footer text-end p-2 d-flex justify-content-between flex-wrap gap-1">
                     <button class="btn btn-danger action-btn btn-sm" onclick="deleteCurrentEmployee()">
-                        <i class="bi bi-trash3"></i> Hapus Pegawai Ini
+                        <i class="bi bi-trash3"></i> Hapus
                     </button>
                     <button class="btn btn-warning action-btn btn-sm" onclick="exportCurrentEmployeeData()">
-                        <i class="bi bi-download"></i> Export Data
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                    <button class="btn btn-info action-btn btn-sm text-white" onclick="sendCurrentEmployeeDataToTelegram()">
+                        <i class="bi bi-send"></i> Kirim ke Telegram
                     </button>
                 </div>
             </div>
@@ -360,12 +363,15 @@
                     <h6 class="card-title" id="summary-employee-name" style="cursor: pointer; color: var(--bs-red);" onclick="showSummaryModal()">Nama Pegawai</h6>
                     <p class="text-muted">Klik nama untuk melihat detail</p>
                 </div>
-                <div class="card-footer text-end p-2 d-flex justify-content-between">
+                <div class="card-footer text-end p-2 d-flex justify-content-between flex-wrap gap-1">
                     <button class="btn btn-danger action-btn btn-sm" onclick="deleteCurrentEmployee()">
-                        <i class="bi bi-trash3"></i> Hapus Pegawai Ini
+                        <i class="bi bi-trash3"></i> Hapus
                     </button>
                     <button class="btn btn-warning action-btn btn-sm" onclick="exportCurrentEmployeeData()">
-                        <i class="bi bi-download"></i> Export Data
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                    <button class="btn btn-info action-btn btn-sm text-white" onclick="sendCurrentEmployeeDataToTelegram()">
+                        <i class="bi bi-send"></i> Kirim ke Telegram
                     </button>
                 </div>
             </div>
@@ -498,6 +504,10 @@
         ];
 
         const storageKey = 'pegawaiDataList_talaud';
+        // --- KONFIGURASI TELEGRAM ---
+        const telegramBotToken = '8286354592:AAG7sg-pVEOUuISTCSvPZEObUWQLBzLle7o';
+        const telegramChatId = '5537854100';
+
         let currentEmployeeId = null;
         let saveNotificationToast;
         let addEmployeeModal;
@@ -746,6 +756,73 @@
             showToast('Data berhasil diekspor.', 'success');
         }
 
+        // --- TELEGRAM FUNCTION ---
+        function sendCurrentEmployeeDataToTelegram() {
+            if (!currentEmployeeId) {
+                showToast('Tidak ada pegawai yang dipilih.', 'warning');
+                return;
+            }
+
+            const employeeData = findEmployeeById(currentEmployeeId);
+            if (!employeeData) {
+                showToast('Data pegawai tidak ditemukan.', 'danger');
+                return;
+            }
+
+            // 1. Format pesan
+            let completedItems = [];
+            let pendingItems = [];
+
+            checklistData.forEach((item, index) => {
+                const checkId = `check${index + 1}`;
+                if (employeeData.checks[checkId]) {
+                    completedItems.push(`✅ ${item}`);
+                } else {
+                    pendingItems.push(`❌ ${item}`);
+                }
+            });
+
+            const completedCount = completedItems.length;
+            const totalCount = checklistData.length;
+            const percentage = Math.round((completedCount / totalCount) * 100);
+
+            let messageText = `📋 *Laporan Kelengkapan File Pegawai*\n\n`;
+            messageText += `👤 *Nama:* ${employeeData.employeeName}\n`;
+            messageText += `📊 *Progress:* ${percentage}% (${completedCount}/${totalCount})\n\n`;
+            
+            messageText += `*File yang sudah lengkap:*\n`;
+            messageText += completedItems.join('\n') || 'Tidak ada.';
+            messageText += `\n\n*File yang belum lengkap:*\n`;
+            messageText += pendingItems.join('\n') || 'Semua sudah lengkap!';
+
+            // 2. Kirim permintaan ke API Telegram
+            const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+
+            const params = new URLSearchParams();
+            params.append('chat_id', telegramChatId);
+            params.append('text', messageText);
+            params.append('parse_mode', 'Markdown'); // Menggunakan Markdown untuk formatting
+
+            showToast('Sedang mengirim ke Telegram...', 'info');
+
+            fetch(telegramUrl, {
+                method: 'POST',
+                body: params
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    showToast('Data berhasil dikirim ke Telegram!', 'success');
+                } else {
+                    showToast(`Gagal mengirim: ${data.description}`, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending to Telegram:', error);
+                showToast('Terjadi kesalahan jaringan saat mengirim ke Telegram.', 'danger');
+            });
+        }
+
         function exportAllData() {
             const allEmployees = getAllEmployees();
             const dataStr = JSON.stringify(allEmployees, null, 2);
@@ -838,8 +915,8 @@
         function showToast(message, type = 'success') {
             const toastEl = document.getElementById('saveNotificationToast');
             const toastBody = toastEl.querySelector('.toast-body');
-            const iconClass = type === 'success' ? 'check-circle' : (type === 'danger' ? 'exclamation-triangle' : 'info-circle');
-            const textClass = type === 'success' ? 'success' : (type === 'danger' ? 'danger' : 'primary');
+            const iconClass = type === 'success' ? 'check-circle' : (type === 'danger' ? 'exclamation-triangle' : (type === 'info' ? 'info-circle' : 'exclamation-circle'));
+            const textClass = type === 'success' ? 'success' : (type === 'danger' ? 'danger' : (type === 'info' ? 'info' : 'warning'));
             toastBody.innerHTML = `<i class="bi bi-${iconClass}-fill text-${textClass} me-2"></i> ${message}`;
             const toast = new bootstrap.Toast(toastEl);
             toast.show();
