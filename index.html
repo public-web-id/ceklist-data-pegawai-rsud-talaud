@@ -459,6 +459,17 @@
             margin: 20px auto;
             display: none; /* Akan ditampilkan saat cropping */
         }
+        
+        /* PERUBAHAN: Tambahkan instruksi untuk crop otomatis */
+        .cropper-instructions {
+            background-color: #e7f3ff;
+            border-left: 4px solid var(--info-color);
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: var(--dark-color);
+        }
 
         .cropper-actions {
             margin-top: 15px;
@@ -934,7 +945,7 @@
             pointer-events: none;
         }
         
-        /* Gaya untuk modal kode daftar */
+        /* Gaya untuk modal kode daftar - DIMODIFIKASI */
         .modal {
             display: none;
             position: fixed;
@@ -954,16 +965,17 @@
 
         .modal-content {
             background-color: white;
-            margin: 10% auto;
-            padding: 20px;
+            margin: 5% auto;
+            padding: 30px;
             border-radius: 15px;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
             box-shadow: var(--card-shadow-hover);
             text-align: center;
             transform: scale(0.9);
             opacity: 0;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .modal.show .modal-content {
@@ -973,11 +985,14 @@
 
         .close {
             color: var(--secondary-color);
-            float: right;
+            position: absolute;
+            top: 15px;
+            right: 15px;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 10;
         }
 
         .close:hover {
@@ -999,14 +1014,53 @@
         }
 
         .kode-daftar {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--primary-color);
-            padding: 15px;
+            padding: 20px;
             background-color: #f0f4ff;
             border-radius: 10px;
             margin: 20px 0;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            border: 2px dashed var(--primary-color);
+        }
+
+        .detail-info {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .detail-info h3 {
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e0e6ed;
+            padding-bottom: 8px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .info-value {
+            color: var(--dark-color);
+            font-weight: 500;
         }
 
         .warning-box {
@@ -1028,24 +1082,6 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-        }
-
-        .btn-download {
-            background-color: var(--success-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-download:hover {
-            background-color: #27ae60;
-            transform: translateY(-2px);
         }
 
         /* Gaya untuk form gambar yang akan dikirim ke Telegram */
@@ -1302,20 +1338,26 @@
                 <!-- SECTION KTP UPLOAD -->
                 <section id="ktpUploadSection" class="ktp-upload-section">
                     <h2><i class="fa-solid fa-id-card"></i> Upload Foto KTP</h2>
+                    <!-- PERUBAHAN: Perbarui teks petunjuk upload -->
                     <div class="upload-area" id="uploadArea">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <p>Klik atau seret foto KTP Anda ke area ini</p>
-                        <span>(Format: JPG/PNG, Resolusi tinggi, Maks. 10MB)</span>
+                        <span>(Akan dipotong otomatis sesuai format KTP)</span>
                     </div>
                     <input type="file" id="ktpUploadInput" accept="image/*">
                     
                     <!-- Container untuk Cropper.js -->
                     <div id="ktpCropperContainer">
+                        <!-- PERUBAHAN: Tambahkan instruksi crop otomatis -->
+                        <div class="cropper-instructions">
+                            <i class="fa-solid fa-info-circle"></i> 
+                            Gambar telah diframing otomatis. Sesuaikan area pemotongan jika perlu, lalu konfirmasi.
+                        </div>
                         <img id="ktpImageForCrop" style="max-width: 100%;">
                     </div>
                     <div class="cropper-actions">
                         <button class="btn-crop" id="confirmCropBtn">
-                            <i class="fa-solid fa-crop"></i> Potong & Konfirmasi
+                            <i class="fa-solid fa-crop"></i> Konfirmasi
                         </button>
                         <button class="btn-cancel-crop" id="cancelCropBtn">
                             <i class="fa-solid fa-times"></i> Batal
@@ -1514,7 +1556,7 @@
         </nav>
     </footer>
 
-    <!-- Modal Kode Daftar -->
+    <!-- Modal Kode Daftar - DIMODIFIKASI -->
     <div id="kodeDaftarModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -1524,17 +1566,43 @@
             </div>
             <div class="modal-body">
                 <div class="kode-daftar" id="kodeDaftarText"></div>
+                
+                <!-- Informasi Detail -->
+                <div class="detail-info">
+                    <h3>Detail Pendaftaran</h3>
+                    <div class="info-row">
+                        <div class="info-label">Nama:</div>
+                        <div class="info-value" id="modalNama"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Jenis Pendaftaran:</div>
+                        <div class="info-value" id="modalJenisPendaftaran"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Tanggal:</div>
+                        <div class="info-value" id="modalTanggal"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Waktu:</div>
+                        <div class="info-value" id="modalWaktu"></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Loket:</div>
+                        <div class="info-value">Loket Pendaftaran RSUD Talaud</div>
+                    </div>
+                </div>
+                
                 <div class="warning-box">
                     <p><strong>PERINGATAN:</strong></p>
-                    <p>1. Wajib download atau screenshoot kode daftar ini</p>
+                    <p>1. Wajib screenshot kode daftar ini</p>
                     <p>2. Segala kehilangan kode daftar bukan tanggung jawab pihak rumah sakit</p>
                     <p>3. Kode daftar hanya berlaku untuk hari ini</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn-download" id="downloadKodeBtn">
-                    <i class="fa-solid fa-download"></i> Download Kode
-                </a>
+                <button class="btn btn-primary" id="closeModalBtn">
+                    <i class="fa-solid fa-check"></i> Tutup
+                </button>
             </div>
         </div>
     </div>
@@ -1679,11 +1747,17 @@
             // Waktu
             const currentTimeElement = document.getElementById('currentTime');
             
-            // Modal Kode Daftar
+            // Modal Kode Daftar - DIMODIFIKASI
             const kodeDaftarModal = document.getElementById('kodeDaftarModal');
             const kodeDaftarText = document.getElementById('kodeDaftarText');
-            const downloadKodeBtn = document.getElementById('downloadKodeBtn');
             const modalClose = document.querySelector('.close');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            
+            // Elemen untuk informasi detail di modal
+            const modalNama = document.getElementById('modalNama');
+            const modalJenisPendaftaran = document.getElementById('modalJenisPendaftaran');
+            const modalTanggal = document.getElementById('modalTanggal');
+            const modalWaktu = document.getElementById('modalWaktu');
             
             // Variabel untuk menyimpan kode daftar
             let currentKodeDaftar = '';
@@ -2210,11 +2284,11 @@
                         cropper.destroy();
                     }
                     
-                    // Inisialisasi Cropper.js dengan aspect ratio KTP (1.586)
+                    // PERUBAHAN: Inisialisasi Cropper.js dengan crop otomatis
                     cropper = new Cropper(ktpImageForCrop, {
-                        aspectRatio: 1.586,
+                        aspectRatio: 1.586, // Rasio aspek KTP Indonesia
                         viewMode: 1,
-                        autoCropArea: 0.9,
+                        autoCropArea: 1.0, // PERUBAHAN: Buat crop box menutupi seluruh gambar
                         responsive: true,
                         restore: false,
                         guides: true,
@@ -2308,7 +2382,7 @@
                 submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Daftar';
             });
 
-            // --- EVENT LISTENER UNTUK MODAL KODE DAFTAR ---
+            // --- EVENT LISTENER UNTUK MODAL KODE DAFTAR - DIMODIFIKASI ---
             modalClose.addEventListener('click', function() {
                 kodeDaftarModal.classList.remove('show');
                 setTimeout(() => {
@@ -2316,59 +2390,11 @@
                 }, 300);
             });
 
-            window.addEventListener('click', function(event) {
-                if (event.target === kodeDaftarModal) {
-                    kodeDaftarModal.classList.remove('show');
-                    setTimeout(() => {
-                        kodeDaftarModal.style.display = 'none';
-                    }, 300);
-                }
-            });
-
-            downloadKodeBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Buat gambar untuk kode daftar
-                const kodeCanvas = document.createElement('canvas');
-                kodeCanvas.width = 600;
-                kodeCanvas.height = 300;
-                const ctx = kodeCanvas.getContext('2d');
-                
-                // Background
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, kodeCanvas.width, kodeCanvas.height);
-                
-                // Border
-                ctx.strokeStyle = '#4364F7';
-                ctx.lineWidth = 5;
-                ctx.strokeRect(0, 0, kodeCanvas.width, kodeCanvas.height);
-                
-                // Header
-                ctx.fillStyle = '#4364F7';
-                ctx.font = 'bold 24px Poppins';
-                ctx.textAlign = 'center';
-                ctx.fillText('KODE DAFTAR', kodeCanvas.width / 2, 50);
-                
-                // Kode
-                ctx.fillStyle = '#2c3e50';
-                ctx.font = 'bold 36px Poppins';
-                ctx.fillText(currentKodeDaftar, kodeCanvas.width / 2, 120);
-                
-                // Informasi
-                ctx.fillStyle = '#6c757d';
-                ctx.font = '16px Poppins';
-                ctx.fillText('RSUD Talaud', kodeCanvas.width / 2, 180);
-                ctx.fillText(`Tanggal: ${new Date().toLocaleDateString('id-ID')}`, kodeCanvas.width / 2, 210);
-                
-                // Peringatan
-                ctx.fillStyle = '#e74c3c';
-                ctx.font = '14px Poppins';
-                ctx.fillText('Simpan kode ini dengan baik', kodeCanvas.width / 2, 250);
-                
-                // Download gambar
-                kodeCanvas.toBlob(function(blob) {
-                    saveAs(blob, `kode-daftar-${currentKodeDaftar}.jpg`);
-                });
+            closeModalBtn.addEventListener('click', function() {
+                kodeDaftarModal.classList.remove('show');
+                setTimeout(() => {
+                    kodeDaftarModal.style.display = 'none';
+                }, 300);
             });
 
             // --- EVENT LISTENER UNTUK SUBMIT FORM ---
@@ -2407,8 +2433,25 @@
                         // Simpan registrasi ke localStorage
                         saveRegistration(formData.namaLengkap, currentRegistrationType, currentKodeDaftar);
                         
-                        // Tampilkan modal kode daftar
+                        // Set informasi detail di modal
                         kodeDaftarText.textContent = currentKodeDaftar;
+                        modalNama.textContent = formData.namaLengkap;
+                        modalJenisPendaftaran.textContent = formData.jenisPendaftaran;
+                        
+                        // Format tanggal dan waktu
+                        const now = new Date();
+                        const tanggal = now.toLocaleDateString('id-ID', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        const waktu = now.toLocaleTimeString('id-ID');
+                        
+                        modalTanggal.textContent = tanggal;
+                        modalWaktu.textContent = waktu;
+                        
+                        // Tampilkan modal kode daftar
                         kodeDaftarModal.style.display = 'block';
                         setTimeout(() => {
                             kodeDaftarModal.classList.add('show');
