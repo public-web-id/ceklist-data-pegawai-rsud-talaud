@@ -2,937 +2,1356 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ceklist Kepegawaian RSUD Talaud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran SKBS/SKBN - RSUD Talaud</title>
     
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <!-- Menggunakan Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        /* --- Gaya Umum & Reset --- */
         :root {
-            --bs-gold: #D4AF37;
-            --bs-red: #A52A2A;
-            --bs-gold-rgb: 212, 175, 55;
-            --bs-red-rgb: 165, 42, 42;
+            --primary-color: #4364F7;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-color: #6c757d;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --border-color: #e0e6ed;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --card-shadow-hover: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding-top: 70px; /* Padding untuk header */
-            padding-bottom: 70px; /* Padding untuk navbar bawah */
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-bottom: 80px;
             overflow-x: hidden;
-            font-size: 0.9rem;
         }
 
-        /* Header Styling */
-        .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1020;
-            background: linear-gradient(90deg, var(--bs-gold), var(--bs-red));
+        /* Container diperbesar dari 480px menjadi 600px */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* --- Header --- */
+        header {
+            background: var(--primary-gradient);
             color: white;
-            padding: 10px 0;
+            padding: 20px 15px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .main-header h4 {
-            margin: 0;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        .main-header p {
-            margin: 0;
-            font-size: 0.8rem;
-        }
-
-        /* Styling untuk konten halaman */
-        .page-content {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .page-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Card Styling */
-        .main-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            position: relative;
             overflow: hidden;
         }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        .card-header {
-            background: linear-gradient(90deg, var(--bs-gold), var(--bs-red));
-            color: white;
-            font-weight: 600;
-            padding: 8px 15px;
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            margin-bottom: 15px;
+        }
+
+        /* Logo diperbesar */
+        .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* Font judul diperbesar */
+        header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Font sub-judul diperbesar */
+        header p {
             font-size: 0.9rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
 
-        .card-body {
-            padding: 10px !important;
+        .header-time {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark-color);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            width: 100%;
         }
 
-        /* Employee List Styling */
-        .employee-list .list-group-item {
+        /* Font waktu diperbesar */
+        .current-time {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        /* --- Gaya untuk Halaman Beranda (Opening) --- */
+        .opening-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px; /* Padding diperbesar */
+            margin-top: 25px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+        
+        /* Font judul card diperbesar */
+        .opening-card h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        .choice-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .choice-button {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 18px; /* Padding diperbesar */
+            background-color: #fdfdfd;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            padding: 12px 15px;
-        }
-        .employee-list .list-group-item:hover {
-            background-color: #f8f9fa;
-        }
-        .employee-list .progress {
-            height: 5px;
-        }
-
-        /* Custom Checklist Styling */
-        .custom-list-group {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .custom-list-group .list-group-item {
-            border: none;
-            border-bottom: 1px solid #e9ecef;
-            padding: 8px 15px;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Ikon diperbesar */
+        .choice-button i {
+            font-size: 1.7rem;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+        .choice-button:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover);
+        }
+        
+        /* Font tombol pilihan diperbesar */
+        .choice-button .button-text h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .choice-button .button-text p {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        /* --- Area Upload KTP --- */
+        .ktp-upload-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px; /* Padding diperbesar */
+            margin-top: 25px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ktp-upload-section.processing {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 30px 15px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fdfdfd;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f4ff;
+        }
+
+        /* Ikon upload diperbesar */
+        .upload-area i {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .upload-area p {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .upload-area span {
+            color: var(--primary-color);
+            font-weight: 600;
             font-size: 0.85rem;
         }
+
+        #ktpUploadInput {
+            display: none;
+        }
+
+        .upload-result {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* Preview gambar diperbesar */
+        .upload-result img {
+            max-width: 180px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 15px;
+        }
+
+        .upload-status {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .upload-status.success {
+            color: var(--success-color);
+        }
+
+        .upload-status.error {
+            color: var(--danger-color);
+        }
+
+        /* --- Konten Utama (Formulir & Alur Layanan) --- */
+        main {
+            padding: 15px 0;
+        }
+
+        .content-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
         
-        .custom-list-group .list-group-item:last-child {
-            border-bottom: none;
+        .content-section.active {
+            display: block;
+            opacity: 1;
         }
 
-        .custom-list-group .list-group-item:hover {
-            background-color: #f8f9fa;
-            transform: translateX(3px);
+        .form-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px; /* Padding diperbesar */
+            margin-top: 25px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
         }
         
-        .custom-list-group .list-group-item.checked {
-            background-color: #fff3cd;
-            border-left: 4px solid var(--bs-gold);
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
         }
 
-        .form-check-input:checked {
-            background-color: var(--bs-gold);
-            border-color: var(--bs-gold);
+        /* Font judul form diperbesar */
+        .form-card h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-left: 15px;
+            border-left: 5px solid var(--primary-color);
         }
 
-        /* Navbar Bawah Styling */
-        .bottom-navbar {
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        /* Font label form diperbesar */
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="tel"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px; /* Padding diperbesar */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem; /* Font diperbesar */
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background-color: #fdfdfd;
+        }
+        
+        .form-group input:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 100, 247, 0.2);
+            background-color: white;
+        }
+        
+        /* Gaya untuk Radio Button Jenis Kelamin */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .radio-item input[type="radio"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .radio-item label {
+            cursor: pointer;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Tombol */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px; /* Padding diperbesar */
+            font-size: 1rem; /* Font diperbesar */
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 100, 247, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 100, 247, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            background: var(--secondary-color);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Gaya untuk Timeline Alur Layanan --- */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        /* Font judul timeline diperbesar */
+        .timeline-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        /* Font paragraf timeline diperbesar */
+        .timeline-content p {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+        
+        .timeline-content strong {
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .timeline-content .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid var(--info-color);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .timeline-content .info-box p {
+            margin-bottom: 0;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+        .timeline-content .info-box strong {
+            color: var(--info-color);
+        }
+
+        /* Notifikasi */
+        .notification {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 90%;
+        }
+
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .notification i {
+            font-size: 1.2rem;
+        }
+
+        .notification.success {
+            background-color: white;
+            color: var(--success-color);
+            border-left: 5px solid var(--success-color);
+        }
+        
+        .notification.error {
+            background-color: white;
+            color: var(--danger-color);
+            border-left: 5px solid var(--danger-color);
+        }
+
+        /* --- Footer & Menu Bawah --- */
+        footer {
             position: fixed;
             bottom: 0;
             left: 0;
-            right: 0;
-            z-index: 1030;
-            background-color: white;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.08);
-            border-top: 1px solid #dee2e6;
+            width: 100%;
+            background: var(--primary-gradient);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
-        .bottom-navbar .nav-link {
-            color: var(--bs-secondary);
-            padding: 8px 4px; /* Padding diperbesar sedikit */
+        footer nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0; /* Padding diperbesar */
+        }
+
+        footer nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
             font-size: 0.7rem; /* Font diperbesar */
             transition: all 0.3s ease;
-            border-radius: 8px;
-            margin: 2px 1px;
+            padding: 5px;
+            position: relative;
         }
-
-        .bottom-navbar .nav-link.active {
-            color: white;
-            background: linear-gradient(45deg, var(--bs-gold), var(--bs-red));
-            font-weight: bold;
-        }
-        .bottom-navbar .nav-link.disabled {
-            color: #ccc;
+        
+        footer nav a.disabled {
+            color: rgba(255, 255, 255, 0.5);
             cursor: not-allowed;
         }
 
-        .bottom-navbar .nav-link i {
-            font-size: 1.3rem; /* Ikon diperbesar */
-            display: block;
-            margin-bottom: 2px;
+        /* Ikon footer diperbesar */
+        footer nav a i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+            transition: transform 0.3s ease;
         }
-        
-        /* Tombol Aksi */
-        .action-btn {
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: none;
-            font-size: 0.85rem;
-            padding: 5px 10px;
-        }
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .btn-gradient {
-            background: linear-gradient(45deg, var(--bs-gold), var(--bs-red));
+
+        footer nav a.active {
             color: white;
         }
-
-        /* Progress Bar Styling */
-        .progress {
-            height: 20px;
-            border-radius: 10px;
+        
+        footer nav a.active::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
         }
 
-        .progress-bar {
-            font-weight: bold;
-            font-size: 0.8rem;
-            background: linear-gradient(90deg, var(--bs-gold), var(--bs-red));
+        footer nav a:not(.disabled):hover {
+            color: white;
         }
         
-        /* Rangkuman Item Styling */
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 10px;
-            border-bottom: 1px solid #e9ecef;
-            font-size: 0.85rem;
-        }
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-        .summary-item i {
-            font-size: 1rem;
-        }
-        .status-done { color: var(--bs-gold); }
-        .status-pending { color: var(--bs-secondary); }
-
-        /* Toast Notification Styling */
-        .toast-container {
-            position: fixed;
-            top: 80px; /* Posisi dari atas disesuaikan dengan header */
-            right: 10px;
-            z-index: 1055;
-        }
-        .toast {
-            background: linear-gradient(45deg, #ffffff, #f8f9fa);
-            border-left: 4px solid var(--bs-gold);
-            font-size: 0.85rem;
+        footer nav a:not(.disabled):hover i {
+            transform: translateY(-3px);
         }
 
-        /* Logo di Pojok Kanan Atas */
-        #logo {
-            position: fixed;
-            top: 75px; /* Disesuaikan dengan header */
-            right: 10px; /* Dipindahkan dari kiri ke kanan */
-            width: 40px;
-            height: 40px;
-            z-index: 1019;
-            border-radius: 50%;
+        /* Jenis Pendaftaran Card */
+        .registration-type-card {
             background-color: white;
-            padding: 3px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 25px; /* Padding diperbesar */
+            margin: 25px auto;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        /* Font judul kartu jenis pendaftaran diperbesar */
+        .registration-type-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        /* Tambahkan gaya untuk info lokasi */
+        .location-info {
+            background-color: #fff9e6;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .location-info p {
+            margin-bottom: 0;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+        .location-info strong {
+            color: #e6a800;
+        }
+
+        /* Gaya untuk form lock overlay */
+        .form-lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            color: var(--danger-color);
+            margin-bottom: 15px;
+        }
+
+        .lock-message {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .lock-message h3 {
+            font-size: 1.2rem;
+            color: var(--danger-color);
+            margin-bottom: 10px;
+        }
+
+        .lock-message p {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        .choice-button.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Main Header -->
-    <header class="main-header">
-        <h4>CEKLIST KEPEGAWAIAN</h4>
-        <p>RSUD KABUPATEN KEPULAUAN TALAUD</p>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="https://z-cdn-media.chatglm.cn/files/b4d36e42-0be2-452f-8e16-e5eeab08ede5_talaud_400kb.png?auth_key=1864643267-608b935f262943e18f44268f65ab014d-0-20d1a2c006a0416ea1fb36417d8eea78" alt="Logo RSUD Talaud">
+            </div>
+            <div class="header-title">
+                <h1>SKBS/SKBN</h1>
+                <p>RSUD Talaud</p>
+            </div>
+            <div class="header-time">
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </div>
     </header>
 
-    <!-- Logo di Pojok Kanan Atas -->
-    <img id="logo" src="https://z-cdn-media.chatglm.cn/files/48ad0cdb-0296-4fc5-8a89-4195e27da998_talaud_400kb.png?auth_key=1864562517-46b7496151e74edc9a396f55bfc35571-0-20140d03f3932e7c551082915f931a18" alt="Logo Kabupaten Talaud">
-
-    <!-- Toast Container untuk Notifikasi -->
-    <div class="toast-container">
-        <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" id="saveNotificationToast">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    <span id="toastMessage">Data berhasil disimpan.</span>
-                </div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <main>
+        <div class="container">
+            <!-- Notifikasi akan muncul di sini -->
+            <div id="notification" class="notification">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="notificationText"></span>
             </div>
-        </div>
-    </div>
 
-    <div class="container">
-        <!-- PAGE 1: DAFTAR PEGAWAI -->
-        <div id="page-daftar-pegawai" class="page-content active">
-            <div class="card main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-people-fill"></i> DAFTAR PEGAWAI</span>
-                    <button class="btn btn-light btn-sm action-btn" onclick="showAddEmployeeModal()">
-                        <i class="bi bi-plus-circle"></i> Tambah Baru
-                    </button>
-                </div>
-                <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
-                    <ul class="list-group list-group-flush employee-list" id="employee-list">
-                        <!-- Daftar pegawai akan di-generate oleh JavaScript -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 2: CEKLIST PEGAWAI -->
-        <div id="page-ceklist" class="page-content">
-            <div class="card main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-list-check"></i> <span id="detail-employee-name">Nama Pegawai</span></span>
-                    <button class="btn btn-light btn-sm action-btn" onclick="showEmployeeList()">
-                        <i class="bi bi-arrow-left"></i> Kembali
-                    </button>
-                </div>
-                <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
-                    <ul class="custom-list-group" id="checklist-detail">
-                        <!-- Daftar item akan di-generate oleh JavaScript -->
-                    </ul>
-                </div>
-                <div class="card-footer text-end p-2 d-flex justify-content-between flex-wrap gap-1">
-                    <button class="btn btn-danger action-btn btn-sm" onclick="deleteCurrentEmployee()">
-                        <i class="bi bi-trash3"></i> Hapus
-                    </button>
-                    <button class="btn btn-warning action-btn btn-sm" onclick="exportCurrentEmployeeData()">
-                        <i class="bi bi-download"></i> Export
-                    </button>
-                    <button class="btn btn-info action-btn btn-sm text-white" onclick="sendCurrentEmployeeDataToTelegram()">
-                        <i class="bi bi-send"></i> Kirim ke Telegram
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 3: DAFTAR SELESAI -->
-        <div id="page-selesai" class="page-content">
-            <div class="card main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-check-circle"></i> FILE YANG SUDAH LENGKAP</span>
-                    <button class="btn btn-light btn-sm action-btn" onclick="showPage('ceklist')">
-                        <i class="bi bi-arrow-left"></i> Kembali ke Ceklist
-                    </button>
-                </div>
-                <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
-                    <ul class="custom-list-group" id="checklist-completed">
-                        <!-- Item selesai akan di-generate oleh JavaScript -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 4: DAFTAR YANG BELUM LENGKAP -->
-        <div id="page-proses" class="page-content">
-            <div class="card main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-x-circle"></i> DAFTAR YANG BELUM LENGKAP</span>
-                    <button class="btn btn-light btn-sm action-btn" onclick="showPage('ceklist')">
-                        <i class="bi bi-arrow-left"></i> Kembali ke Ceklist
-                    </button>
-                </div>
-                <div class="card-body p-0" style="max-height: 60vh; overflow-y: auto;">
-                    <ul class="custom-list-group" id="checklist-inprogress">
-                        <!-- Item dalam proses akan di-generate oleh JavaScript -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 5: RANGKUMAN -->
-        <div id="page-rangkuman" class="page-content">
-            <div class="card main-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-clipboard-data"></i> RANGKUMAN KELENGKAPAN FILE</span>
-                    <button class="btn btn-light btn-sm action-btn" onclick="showPage('ceklist')">
-                        <i class="bi bi-arrow-left"></i> Kembali ke Ceklist
-                    </button>
-                </div>
-                <div class="card-body text-center">
-                    <h6 class="card-title" id="summary-employee-name" style="cursor: pointer; color: var(--bs-red);" onclick="showSummaryModal()">Nama Pegawai</h6>
-                    <p class="text-muted">Klik nama untuk melihat detail</p>
-                </div>
-                <div class="card-footer text-end p-2 d-flex justify-content-between flex-wrap gap-1">
-                    <button class="btn btn-danger action-btn btn-sm" onclick="deleteCurrentEmployee()">
-                        <i class="bi bi-trash3"></i> Hapus
-                    </button>
-                    <button class="btn btn-warning action-btn btn-sm" onclick="exportCurrentEmployeeData()">
-                        <i class="bi bi-download"></i> Export
-                    </button>
-                    <button class="btn btn-info action-btn btn-sm text-white" onclick="sendCurrentEmployeeDataToTelegram()">
-                        <i class="bi bi-send"></i> Kirim ke Telegram
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 6: PENGATURAN -->
-        <div id="page-pengaturan" class="page-content">
-            <div class="card main-card">
-                <div class="card-header">
-                    <i class="bi bi-gear-fill"></i> PENGATURAN DATA
-                </div>
-                <div class="card-body">
-                    <h6>Kelola Data Semua Pegawai</h6>
-                    <p class="text-muted">Di sini Anda dapat mengekspor, mengimpor, atau menghapus semua data pegawai sekaligus.</p>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-gradient action-btn" onclick="exportAllData()">
-                            <i class="bi bi-download"></i> Export Semua Data
-                        </button>
-                        <button class="btn btn-secondary action-btn" onclick="document.getElementById('importAllFile').click()">
-                            <i class="bi bi-upload"></i> Impor Data dari File
-                        </button>
-                        <input type="file" id="importAllFile" accept=".json" style="display: none;" onchange="importAllData(event)">
-                        <button class="btn btn-danger action-btn" onclick="clearAllEmployeeData()">
-                            <i class="bi bi-exclamation-triangle"></i> Hapus Semua Data Pegawai
-                        </button>
+            <!-- SECTION 1: BERANDA (OPENING) -->
+            <section id="berandaSection" class="content-section active">
+                <div class="opening-card">
+                    <h2>Selamat Datang di Layanan Pendaftaran Online</h2>
+                    <p style="color: var(--secondary-color); margin-bottom: 30px;">Silakan pilih jenis pendaftaran yang Anda butuhkan:</p>
+                    <div class="choice-buttons">
+                        <a href="#" class="choice-button" id="daftarSkbsBtn">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                            <div class="button-text">
+                                <h3>Daftar SKBS</h3>
+                                <p>Surat Keterangan Berbadan Sehat</p>
+                            </div>
+                        </a>
+                        <a href="#" class="choice-button" id="daftarSkbnBtn">
+                            <i class="fa-solid fa-shield-virus"></i>
+                            <div class="button-text">
+                                <h3>Daftar SKBN</h3>
+                                <p>Surat Keterangan Bebas Narkoba</p>
+                            </div>
+                        </a>
+                        <a href="#" class="choice-button" id="daftarKeduanyaBtn">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <div class="button-text">
+                                <h3>Daftar SKBS & SKBN</h3>
+                                <p>Mendaftar untuk kedua surat sekaligus</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </section>
 
-    <!-- Modal Tambah Pegawai Baru -->
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addEmployeeModalLabel">Tambah Data Pegawai Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- SECTION 2: LAYANAN (FORMULIR PENDAFTARAN) -->
+            <section id="layananSection" class="content-section">
+                <!-- Jenis Pendaftaran Card -->
+                <div class="registration-type-card">
+                    <h2 id="registrationTypeText">Jenis Pendaftaran</h2>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="modalEmployeeNameInput" class="form-label">Nama Pegawai</label>
-                        <input type="text" class="form-control" id="modalEmployeeNameInput" placeholder="Masukkan Nama Lengkap">
-                    </div>
-                    <hr>
-                    <h6>Checklist Kelengkapan File (Opsional)</h6>
-                    <p class="text-muted">Anda dapat mengisi checklist ini sekarang atau nanti.</p>
-                    <div style="max-height: 40vh; overflow-y: auto;">
-                        <ul class="custom-list-group" id="checklist-modal">
-                            <!-- Daftar item akan di-generate oleh JavaScript -->
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-gradient" onclick="saveNewEmployee()">Simpan Pegawai</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal Detail Rangkuman -->
-    <div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="summaryModalLabel">Rangkuman Kelengkapan File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 class="card-title" id="modal-summary-employee-name">Nama Pegawai</h6>
-                    <div class="mb-3">
-                        <label for="modalProgressBar" class="form-label" style="font-size: 0.85rem;">Persentase Kelengkapan</label>
-                        <div class="progress">
-                            <div id="modalProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                <!-- SECTION KTP UPLOAD -->
+                <section id="ktpUploadSection" class="ktp-upload-section">
+                    <h2><i class="fa-solid fa-id-card"></i> Upload Foto KTP</h2>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Klik atau seret foto KTP Anda ke area ini</p>
+                        <span>(Format: JPG, PNG, Maks. 2MB)</span>
+                    </div>
+                    <input type="file" id="ktpUploadInput" accept="image/*">
+                    
+                    <div class="upload-result" id="uploadResult">
+                        <img id="ktpPreview" src="" alt="Preview KTP">
+                        <p class="upload-status" id="uploadStatus"></p>
+                    </div>
+                </section>
+
+                <form id="registrationForm">
+                    <!-- Bagian 1: Data Pemohon -->
+                    <div class="form-card">
+                        <h2><i class="fa-solid fa-user"></i> Data Pemohon</h2>
+                        
+                        <div class="form-group">
+                            <label for="namaLengkapKtp">NAMA LENGKAP KTP</label>
+                            <input type="text" id="namaLengkapKtp" name="namaLengkapKtp" required placeholder="Masukkan nama sesuai KTP">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="umur">UMUR</label>
+                            <select id="umur" name="umur" required>
+                                <option value="">-- Pilih Umur --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>JENIS KELAMIN</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="jenisKelamin" value="Laki-laki" required>
+                                    <label for="laki">Laki-laki</label>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="jenisKelamin" value="Perempuan" required>
+                                    <label for="perempuan">Perempuan</label>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alamat">ALAMAT</label>
+                            <textarea id="alamat" name="alamat" rows="3" required placeholder="Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pekerjaan">PEKERJAAN</label>
+                            <input type="text" id="pekerjaan" name="pekerjaan" required placeholder="Contoh: PEGAWAI SWASTA">
                         </div>
                     </div>
-                    <h6 class="mt-3 mb-2">Detail Status File:</h6>
-                    <div id="modal-summary-list">
-                        <!-- Daftar rangkuman akan di-generate oleh JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="navbar bottom-navbar">
-        <ul class="nav nav-justified w-100">
-            <li class="nav-item">
-                <a class="nav-link active" href="#" onclick="showPage('daftar-pegawai', this)">
-                    <i class="bi bi-people"></i>
-                    <span>Daftar</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" id="nav-ceklist" onclick="showPage('ceklist', this)">
-                    <i class="bi bi-list-check"></i>
-                    <span>Ceklist</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" id="nav-rangkuman" onclick="showPage('rangkuman', this)">
-                    <i class="bi bi-clipboard-data"></i>
-                    <span>Rangkuman</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showPage('pengaturan', this)">
-                    <i class="bi bi-gear"></i>
-                    <span>Pengaturan</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        const checklistData = [
-            "IJAZAH SD", "IJAZAH SMP", "IJAZAH SMA/SEDERAJAT", "IJAZAH DIPLOMA (D1,D2,D3)", "IJAZAH SARJANA (S1,S2,S3)",
-            "TRANSKRIP NILAI TERAKHIR", "DAFTAR RIWAYAT HIDUP (DRH)", "AKTA KELAHIRAN (SUAMI/ISTRI/ANAK)", "KARTU KELUARGA", "SK CPNS (80%)",
-            "SK PNS (100%)", "SK KENAIKAN PANGKAT PERTAMA SAMPAI PANGKAT TERAKHIR", "SK PENGANGKATAN PERTAMA KALI DALAM JABATAN FUNGSIONAL", "SK PELANTIKAN BAGI YANG PERNAH MENDUDUKI JABATAN STRUKTURAL", "SK KONVERSI NIP",
-            "SK KENAIKAN GAJI BERKALA TERAKHIR", "SK MUTASI/NOTA DINAS BAGI YANG DIMUTASIKAN", "SURAT TANDA TAMAT PELATIHAN PRAJABATAN", "BERITA ACARA PENGAMBILAN SUMPAH/ JANJI PNS", "KARTU PEGAWAI (KARPEG)",
-            "KARTU PEGAWAI ELEKTRONIK (KPE)", "KARTU SUAMI/ISTRI", "KARTU ASPEN", "KARTU PESERTA BPJS KESEHATAN (SUAMI/ISTRI/ANAK)", "NPWP",
-            "SURAT TANDA REGISTRASI (STR)", "SURAT IZIN PRAKTEK (SIP)", "KARTU ANGGOTA PROFESI", "SURAT PENUGASAN KLINIK (SPK)", "RINCIAN KEWENANGAN KLINIS (RKK)",
-            "SURAT TUGAS", "URAIAN TUGAS", "PENETAPAN ANGKA KREDIT (PAK) TERAKHIR", "SKP TAHUN 2020 & 2021", "SK KEPANITIAAN/ KELOMPOK KERJA DI RUMAH SAKIT",
-            "SERTIFIKAT DIKLAT STRUKTURAL / FUNGSIONAL", "SERTIFIKAT BIMTEK / WORKSHOP / SEMINAR", "PAS FOTO WARNA LATAR MERAH 4X6 (1 LEMBAR) PAKAIAN DINAS KHUSUK (KHEKI)"
-        ];
-
-        const storageKey = 'pegawaiDataList_talaud';
-        // --- KONFIGURASI TELEGRAM ---
-        const telegramBotToken = '8286354592:AAG7sg-pVEOUuISTCSvPZEObUWQLBzLle7o';
-        const telegramChatId = '5537854100';
-
-        let currentEmployeeId = null;
-        let saveNotificationToast;
-        let addEmployeeModal;
-        let summaryModal;
-
-        // --- DATA MANAGEMENT ---
-        function getAllEmployees() {
-            const savedData = localStorage.getItem(storageKey);
-            return savedData ? JSON.parse(savedData) : [];
-        }
-
-        function saveAllEmployees(data) {
-            localStorage.setItem(storageKey, JSON.stringify(data));
-        }
-
-        function findEmployeeById(id) {
-            const employees = getAllEmployees();
-            return employees.find(emp => emp.id === id);
-        }
-
-        function generateUniqueId() {
-            return `emp_${Date.now()}`;
-        }
-
-        // --- UI RENDERING ---
-        function renderEmployeeList() {
-            const employees = getAllEmployees();
-            const listContainer = document.getElementById('employee-list');
-            listContainer.innerHTML = '';
-
-            if (employees.length === 0) {
-                listContainer.innerHTML = '<li class="list-group-item text-center text-muted">Belum ada data pegawai. Klik "Tambah Baru" untuk memulai.</li>';
-                return;
-            }
-
-            employees.forEach(emp => {
-                const completedCount = Object.values(emp.checks).filter(isChecked => isChecked).length;
-                const percentage = Math.round((completedCount / checklistData.length) * 100);
-
-                const li = document.createElement('li');
-                li.className = 'list-group-item';
-                li.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="bi bi-person-circle me-2"></i>
-                            <strong>${emp.employeeName || 'Tanpa Nama'}</strong>
+                    <!-- Bagian 2: Data Kesehatan (Akan disembunyikan untuk SKBN) -->
+                    <div class="form-card health-data-card">
+                        <h2><i class="fa-solid fa-heart-pulse"></i> Data Kesehatan</h2>
+                        
+                        <div class="form-group">
+                            <label for="tinggiBadan">TINGGI BADAN (cm)</label>
+                            <select id="tinggiBadan" name="tinggiBadan" required>
+                                <option value="">-- Pilih Tinggi Badan --</option>
+                            </select>
                         </div>
-                        <div style="width: 30%;">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">${percentage}%</div>
+
+                        <div class="form-group">
+                            <label for="beratBadan">BERAT BADAN (kg)</label>
+                            <select id="beratBadan" name="beratBadan" required>
+                                <option value="">-- Pilih Berat Badan --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tekananDarah">TEKANAN DARAH</label>
+                            <input type="text" id="tekananDarah" name="tekananDarah" value="PEMERIKSAAN WAJIB DI POLIKLINIK" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Bagian 3: Tujuan Pembuatan Surat -->
+                    <div class="form-card">
+                        <h2><i class="fa-solid fa-bullseye"></i> Tujuan Pembuatan Surat</h2>
+                        <div class="form-group">
+                            <label for="tujuanSurat">TUJUAN PEMBUATAN SURAT</label>
+                            <textarea id="tujuanSurat" name="tujuanSurat" rows="3" required placeholder="Contoh: UNTUK PERSYARATAN MELAMAR PEKERJAAN"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Form -->
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary" id="resetBtn">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fa-solid fa-paper-plane"></i> Daftar
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- SECTION 3: INFORMASI (ALUR LAYANAN) -->
+            <section id="informasiSection" class="content-section">
+                <div class="form-card">
+                    <h2><i class="fa-solid fa-route"></i> Alur Pelayanan Terpadu SKBS & SKBN</h2>
+                    <p style="margin-bottom: 20px; color: var(--secondary-color);">Berikut adalah alur pelayanan yang harus Anda ikuti untuk mendapatkan Surat Keterangan Berbadan Sehat (SKBS) dan Surat Keterangan Bebas Narkoba (SKBN).</p>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"><i class="fa-solid fa-user-check"></i></div>
+                            <div class="timeline-content">
+                                <h3>1. Konfirmasi & Pembayaran di Loket</h3>
+                                <p>Setelah mendaftar online, datang ke <strong>Loket Pendaftaran</strong> untuk:</p>
+                                <ul style="padding-left: 20px; margin-top: 5px;">
+                                    <li>Konfirmasi data dan mendapatkan <strong>Status Pasien</strong>.</li>
+                                    <li>Melakukan <strong>pembayaran</strong> seluruh biaya pemeriksaan di <strong>Kasir</strong> (berada di loket yang sama).</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker"><i class="fa-solid fa-stethoscope"></i></div>
+                            <div class="timeline-content">
+                                <h3>2. Pemeriksaan Awal di Poliklinik</h3>
+                                <p>Menuju ke <strong>Poliklinik</strong> untuk menjalani pemeriksaan fisik awal (tes darah, tensi, mata, dll) sebagai syarat utama SKBS/SKBN.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker"><i class="fa-solid fa-flask-vial"></i></div>
+                            <div class="timeline-content">
+                                <h3>3. Pemeriksaan Lanjutan</h3>
+                                <p>Berdasarkan hasil pemeriksaan awal, ikuti salah satu jalur berikut:</p>
+                                
+                                <div class="info-box">
+                                    <p><strong>Jalur A: Pemeriksaan di Laboratorium RSUD</strong></p>
+                                    <p>Jika Anda belum memiliki hasil lab, Anda akan dirujuk ke <strong>Laboratorium RSUD Talaud</strong> untuk pemeriksaan mendalam.</p>
+                                    <p>Untuk pemeriksaan SKBS: <strong>Pengambilan darah</strong> dan tes urine untuk SKBN.</p>
+                                </div>
+                                
+                                <div class="info-box" style="margin-top: 15px;">
+                                    <p><strong>Jalur B: Validasi Hasil Lab Luar</strong></p>
+                                    <p>Jika Anda sudah membawa hasil pemeriksaan dari <strong>Laboratorium Dinas Kesehatan</strong> atau lab terakreditasi, Anda bisa langsung menuju <strong>Instalasi Gawat Darurat (IGD)</strong> untuk divalidasi oleh dokter penanggung jawab.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-marker"><i class="fa-solid fa-file-signature"></i></div>
+                            <div class="timeline-content">
+                                <h3>4. Penerbitan & Pengambilan Surat</h3>
+                                <p>Setelah semua pemeriksaan selesai dan disetujui dokter:</p>
+                                <ul style="padding-left: 20px; margin-top: 5px;">
+                                    <li>Surat SKBS/SKBN akan diterbitkan.</li>
+                                    <li>Ambil surat yang sudah jadi di <strong>Kantor Gedung Utama Lantai 2</strong>.</li>
+                                </ul>
+                                
+                                <div class="location-info">
+                                    <p><strong><i class="fa-solid fa-location-dot"></i> Informasi Penting:</strong></p>
+                                    <p>SKBS/SKBN akan diterbitkan di kantor lantai 2 gedung utama. Pastikan Anda membawa bukti pembayaran dan semua dokumen pendukung saat pengambilan.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                `;
-                li.onclick = () => loadEmployeeDetail(emp.id);
-                listContainer.appendChild(li);
-            });
-        }
+                </div>
+            </section>
 
-        function renderChecklist(containerId, employeeData, isEditable = false) {
-            const listContainer = document.getElementById(containerId);
-            listContainer.innerHTML = '';
-            const checks = employeeData ? employeeData.checks : {};
+        </div>
+    </main>
 
-            checklistData.forEach((item, index) => {
-                const checkId = `check${index + 1}`;
-                const isChecked = checks ? checks[checkId] : false;
+    <!-- Footer Menu Bawah -->
+    <footer>
+        <nav>
+            <a href="#" id="berandaLink" class="active">
+                <i class="fa-solid fa-home"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="#" id="layananLink">
+                <i class="fa-solid fa-file-contract"></i>
+                <span>Layanan</span>
+            </a>
+            <a href="#" id="informasiLink">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Informasi</span>
+            </a>
+        </nav>
+    </footer>
 
-                const li = document.createElement('li');
-                li.className = `list-group-item ${isChecked ? 'checked' : ''}`;
-                li.innerHTML = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="${containerId}-${checkId}" ${isChecked ? 'checked' : ''} ${!isEditable ? 'disabled' : ''}>
-                        <label class="form-check-label w-100" for="${containerId}-${checkId}">
-                            ${item}
-                        </label>
-                    </div>
-                `;
-                listContainer.appendChild(li);
-            });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- KONFIGURASI TELEGRAM ---
+            // PERINGATAN: Jangan gunakan token ini di lingkungan produksi yang sebenarnya!
+            // Token ini dapat dilihat oleh siapa saja di kode sumber halaman.
+            // Untuk keamanan, gunakan server backend untuk mengirim pesan ke Telegram.
+            const telegramBotToken = '8286354592:AAG7sg-pVEOUuISTCSvPZEObUWQLBzLle7o';
+            const telegramChatId = '5537854100';
+            
+            // --- ELEMEN DOM ---
+            const form = document.getElementById('registrationForm');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            const submitBtn = document.getElementById('submitBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            
+            // Navigasi
+            const berandaLink = document.getElementById('berandaLink');
+            const layananLink = document.getElementById('layananLink');
+            const informasiLink = document.getElementById('informasiLink');
+            const berandaSection = document.getElementById('berandaSection');
+            const layananSection = document.getElementById('layananSection');
+            const informasiSection = document.getElementById('informasiSection');
 
-            if (isEditable) {
-                listContainer.addEventListener('change', function(event) {
-                    if (event.target.type === 'checkbox') {
-                        const listItem = event.target.closest('.list-group-item');
-                        if (event.target.checked) {
-                            listItem.classList.add('checked');
-                        } else {
-                            listItem.classList.remove('checked');
-                        }
-                        updateCheckStatus(event.target.id.replace(`${containerId}-`, ''), event.target.checked);
-                    }
+            // Tombol Pilihan di Beranda
+            const daftarSkbsBtn = document.getElementById('daftarSkbsBtn');
+            const daftarSkbnBtn = document.getElementById('daftarSkbnBtn');
+            const daftarKeduanyaBtn = document.getElementById('daftarKeduanyaBtn');
+
+            // Jenis Pendaftaran Text
+            const registrationTypeText = document.getElementById('registrationTypeText');
+            
+            // Variabel untuk menyimpan jenis pendaftaran
+            let currentRegistrationType = '';
+
+            // Upload KTP
+            const ktpUploadSection = document.getElementById('ktpUploadSection');
+            const uploadArea = document.getElementById('uploadArea');
+            const ktpUploadInput = document.getElementById('ktpUploadInput');
+            const uploadResult = document.getElementById('uploadResult');
+            const ktpPreview = document.getElementById('ktpPreview');
+            const uploadStatus = document.getElementById('uploadStatus');
+            
+            // Variabel untuk menyimpan file KTP
+            let ktpFile = null;
+
+            // Waktu
+            const currentTimeElement = document.getElementById('currentTime');
+
+            // --- INISIALISASI DROPDOWN ---
+            const umurSelect = document.getElementById('umur');
+            for (let i = 5; i <= 100; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + ' Tahun';
+                umurSelect.appendChild(option);
+            }
+
+            const tinggiSelect = document.getElementById('tinggiBadan');
+            for (let i = 50; i <= 250; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + ' cm';
+                tinggiSelect.appendChild(option);
+            }
+
+            const beratSelect = document.getElementById('beratBadan');
+            for (let i = 5; i <= 200; i++) {
+                let option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + ' kg';
+                beratSelect.appendChild(option);
+            }
+
+            // --- FUNGSI WAKTU ---
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                currentTimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+            
+            // Update waktu setiap detik
+            setInterval(updateClock, 1000);
+            updateClock(); // Panggil sekali saat halaman dimuat
+
+            // --- FUNGSI OTOMATIS KAPITAL ---
+            function forceUpperCase(inputId) {
+                const inputElement = document.getElementById(inputId);
+                inputElement.addEventListener('input', function() {
+                    this.value = this.value.toUpperCase();
                 });
             }
-        }
 
-        function renderFilteredLists() {
-            if (!currentEmployeeId) return;
-            const employeeData = findEmployeeById(currentEmployeeId);
-            if (!employeeData) return;
-
-            const completedList = document.getElementById('checklist-completed');
-            const inProgressList = document.getElementById('checklist-inprogress');
-
-            completedList.innerHTML = '';
-            inProgressList.innerHTML = '';
-
-            checklistData.forEach((item, index) => {
-                const checkId = `check${index + 1}`;
-                const isChecked = employeeData.checks[checkId];
-                const li = document.createElement('li');
-                li.className = 'list-group-item';
-                li.innerHTML = `<i class="bi ${isChecked ? 'bi-check-circle-fill status-done' : 'bi-circle status-pending'}"></i> ${item}`;
-
-                if (isChecked) {
-                    completedList.appendChild(li);
+            forceUpperCase('namaLengkapKtp');
+            forceUpperCase('alamat');
+            forceUpperCase('pekerjaan');
+            forceUpperCase('tujuanSurat');
+            
+            // --- FUNGSI NOTIFIKASI ---
+            function showNotification(message, type) {
+                notificationText.textContent = message;
+                notification.className = `notification ${type}`; 
+                
+                const icon = notification.querySelector('i');
+                if (type === 'success') {
+                    icon.className = 'fa-solid fa-circle-check';
                 } else {
-                    inProgressList.appendChild(li);
+                    icon.className = 'fa-solid fa-circle-exclamation';
                 }
-            });
-        }
-        
-        function renderSummaryModalContent() {
-            if (!currentEmployeeId) return;
-            const employeeData = findEmployeeById(currentEmployeeId);
-            if (!employeeData) return;
 
-            const summaryList = document.getElementById('modal-summary-list');
-            const summaryEmployeeName = document.getElementById('modal-summary-employee-name');
-            const progressBar = document.getElementById('modalProgressBar');
+                // Tampilkan notifikasi
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100); 
 
-            summaryEmployeeName.textContent = employeeData.employeeName || '[Nama Belum Diisi]';
-            summaryList.innerHTML = '';
-
-            let completedCount = 0;
-            checklistData.forEach((item, index) => {
-                const checkId = `check${index + 1}`;
-                const isChecked = employeeData.checks[checkId];
-                if (isChecked) completedCount++;
-
-                const div = document.createElement('div');
-                div.className = 'summary-item';
-                div.innerHTML = `
-                    <span>${item}</span>
-                    <i class="bi ${isChecked ? 'bi-check-circle-fill status-done' : 'bi-circle status-pending'}"></i>
-                `;
-                summaryList.appendChild(div);
-            });
-
-            const percentage = Math.round((completedCount / checklistData.length) * 100);
-            progressBar.style.width = `${percentage}%`;
-            progressBar.setAttribute('aria-valuenow', percentage);
-            progressBar.textContent = `${percentage}%`;
-        }
-
-        // --- PAGE NAVIGATION & ACTIONS ---
-        function showPage(pageName, linkElement) {
-            if (pageName !== 'daftar-pegawai' && pageName !== 'pengaturan' && !currentEmployeeId) {
-                showToast('Pilih pegawai terlebih dahulu dari daftar.', 'warning');
-                return;
+                // Sembunyikan notifikasi setelah 5 detik
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
             }
 
-            document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.bottom-navbar .nav-link').forEach(link => link.classList.remove('active'));
-
-            document.getElementById(`page-${pageName}`).classList.add('active');
-            if (linkElement) linkElement.classList.add('active');
-
-            if (pageName === 'ceklist') {
-                renderChecklist('checklist-detail', findEmployeeById(currentEmployeeId), true);
-            } else if (pageName === 'selesai' || pageName === 'proses') {
-                renderFilteredLists();
-            }
-        }
-
-        function showEmployeeList() {
-            currentEmployeeId = null;
-            document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
-            document.getElementById('page-daftar-pegawai').classList.add('active');
-            document.querySelectorAll('.bottom-navbar .nav-link').forEach(link => link.classList.remove('active'));
-            document.querySelector('.bottom-navbar .nav-link').classList.add('active');
-            
-            // Disable nav links that need an employee
-            document.getElementById('nav-ceklist').classList.add('disabled');
-            document.getElementById('nav-rangkuman').classList.add('disabled');
-        }
-        
-        function loadEmployeeDetail(employeeId) {
-            currentEmployeeId = employeeId;
-            const employeeData = findEmployeeById(employeeId);
-            if (!employeeData) return;
-
-            document.getElementById('detail-employee-name').textContent = employeeData.employeeName;
-            document.getElementById('summary-employee-name').textContent = employeeData.employeeName;
-            
-            renderChecklist('checklist-detail', employeeData, true);
-            
-            // Enable nav links
-            document.getElementById('nav-ceklist').classList.remove('disabled');
-            document.getElementById('nav-rangkuman').classList.remove('disabled');
-
-            showPage('ceklist', document.getElementById('nav-ceklist'));
-        }
-        
-        function updateCheckStatus(checkId, isChecked) {
-            if (!currentEmployeeId) return;
-            const employees = getAllEmployees();
-            const employeeIndex = employees.findIndex(emp => emp.id === currentEmployeeId);
-            if (employeeIndex !== -1) {
-                employees[employeeIndex].checks[checkId] = isChecked;
-                saveAllEmployees(employees);
-                showToast('Data berhasil disimpan otomatis.', 'success');
-                renderEmployeeList(); // Update progress bar in list
-            }
-        }
-
-        function deleteCurrentEmployee() {
-            if (!currentEmployeeId) return;
-            const employeeData = findEmployeeById(currentEmployeeId);
-            if (!employeeData) return;
-
-            if (confirm(`Apakah Anda yakin ingin menghapus data untuk "${employeeData.employeeName}"?`)) {
-                let employees = getAllEmployees();
-                employees = employees.filter(emp => emp.id !== currentEmployeeId);
-                saveAllEmployees(employees);
-                showToast('Data pegawai berhasil dihapus.', 'success');
-                showEmployeeList();
-            }
-        }
-
-        function exportCurrentEmployeeData() {
-            if (!currentEmployeeId) return;
-            const employeeData = findEmployeeById(currentEmployeeId);
-            if (!employeeData) return;
-            
-            const dataStr = JSON.stringify(employeeData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `data-pegawai-${employeeData.employeeName.replace(/\s+/g, '-').toLowerCase() || 'tanpa-nama'}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showToast('Data berhasil diekspor.', 'success');
-        }
-
-        // --- TELEGRAM FUNCTION ---
-        function sendCurrentEmployeeDataToTelegram() {
-            if (!currentEmployeeId) {
-                showToast('Tidak ada pegawai yang dipilih.', 'warning');
-                return;
-            }
-
-            const employeeData = findEmployeeById(currentEmployeeId);
-            if (!employeeData) {
-                showToast('Data pegawai tidak ditemukan.', 'danger');
-                return;
-            }
-
-            // 1. Format pesan
-            let completedItems = [];
-            let pendingItems = [];
-
-            checklistData.forEach((item, index) => {
-                const checkId = `check${index + 1}`;
-                if (employeeData.checks[checkId]) {
-                    completedItems.push(`✅ ${item}`);
-                } else {
-                    pendingItems.push(`❌ ${item}`);
+            // --- FUNGSI KIRIM KE TELEGRAM ---
+            async function sendToTelegram(formData) {
+                // Format pesan untuk Telegram
+                let message = `*📋 Pendaftaran Baru SKBS/SKBN*\n\n`;
+                message += `*Jenis Pendaftaran:* ${formData.jenisPendaftaran}\n\n`;
+                message += `*👤 Data Pemohon:*\n`;
+                message += `Nama: ${formData.namaLengkap}\n`;
+                message += `Umur: ${formData.umur}\n`;
+                message += `Jenis Kelamin: ${formData.jenisKelamin}\n`;
+                message += `Alamat: ${formData.alamat}\n`;
+                message += `Pekerjaan: ${formData.pekerjaan}\n\n`;
+                
+                if (formData.jenisPendaftaran !== 'SKBN') {
+                    message += `*🏥 Data Kesehatan:*\n`;
+                    message += `Tinggi Badan: ${formData.tinggiBadan}\n`;
+                    message += `Berat Badan: ${formData.beratBadan}\n\n`;
                 }
-            });
+                
+                message += `*🎯 Tujuan Pembuatan Surat:*\n`;
+                message += `${formData.tujuanSurat}\n\n`;
+                message += `*⏰ Waktu Daftar:* ${new Date().toLocaleString('id-ID')}`;
 
-            const completedCount = completedItems.length;
-            const totalCount = checklistData.length;
-            const percentage = Math.round((completedCount / totalCount) * 100);
-
-            let messageText = `📋 *Laporan Kelengkapan File Pegawai*\n\n`;
-            messageText += `👤 *Nama:* ${employeeData.employeeName}\n`;
-            messageText += `📊 *Progress:* ${percentage}% (${completedCount}/${totalCount})\n\n`;
-            
-            messageText += `*File yang sudah lengkap:*\n`;
-            messageText += completedItems.join('\n') || 'Tidak ada.';
-            messageText += `\n\n*File yang belum lengkap:*\n`;
-            messageText += pendingItems.join('\n') || 'Semua sudah lengkap!';
-
-            // 2. Kirim permintaan ke API Telegram
-            const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
-
-            const params = new URLSearchParams();
-            params.append('chat_id', telegramChatId);
-            params.append('text', messageText);
-            params.append('parse_mode', 'Markdown'); // Menggunakan Markdown untuk formatting
-
-            showToast('Sedang mengirim ke Telegram...', 'info');
-
-            fetch(telegramUrl, {
-                method: 'POST',
-                body: params
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    showToast('Data berhasil dikirim ke Telegram!', 'success');
-                } else {
-                    showToast(`Gagal mengirim: ${data.description}`, 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Error sending to Telegram:', error);
-                showToast('Terjadi kesalahan jaringan saat mengirim ke Telegram.', 'danger');
-            });
-        }
-
-        function exportAllData() {
-            const allEmployees = getAllEmployees();
-            const dataStr = JSON.stringify(allEmployees, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `all-pegawai-data-${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showToast('Semua data berhasil diekspor.', 'success');
-        }
-
-        function importAllData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
                 try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        saveAllEmployees(importedData);
-                        renderEmployeeList();
-                        showToast('Data berhasil diimpor.', 'success');
-                        showEmployeeList();
+                    // Kirim pesan teks
+                    const textUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+                    const textResponse = await fetch(textUrl);
+                    const textResult = await textResponse.json();
+                    
+                    if (!textResult.ok) {
+                        throw new Error('Gagal mengirim pesan teks ke Telegram');
+                    }
+                    
+                    // Kirim foto KTP jika ada
+                    if (ktpFile) {
+                        // Buat FormData untuk mengirim file
+                        const photoFormData = new FormData();
+                        photoFormData.append('chat_id', telegramChatId);
+                        photoFormData.append('photo', ktpFile, 'ktp.jpg');
+                        photoFormData.append('caption', '*Foto KTP Pemohon*');
+                        
+                        // Kirim foto dengan metode multipart/form-data
+                        const photoUrl = `https://api.telegram.org/bot${telegramBotToken}/sendPhoto`;
+                        const photoResponse = await fetch(photoUrl, {
+                            method: 'POST',
+                            body: photoFormData
+                        });
+                        const photoResult = await photoResponse.json();
+                        
+                        if (!photoResult.ok) {
+                            // Jika gagal kirim foto, tetapi pesan teks berhasil, tetap anggap sukses
+                            console.error('Gagal mengirim foto KTP:', photoResult);
+                        }
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Error sending to Telegram:', error);
+                    return false;
+                }
+            }
+            
+            // --- FUNGSI KONFIGURASI FORM ---
+            function configureForm(type) {
+                currentRegistrationType = type;
+                const healthDataCard = document.querySelector('.health-data-card');
+                const tinggiBadanInput = document.getElementById('tinggiBadan');
+                const beratBadanInput = document.getElementById('beratBadan');
+
+                // Update jenis pendaftaran text
+                if (type === 'skbs') {
+                    registrationTypeText.textContent = 'Pendaftaran Surat Keterangan Berbadan Sehat (SKBS)';
+                } else if (type === 'skbn') {
+                    registrationTypeText.textContent = 'Pendaftaran Surat Keterangan Bebas Narkoba (SKBN)';
+                } else {
+                    registrationTypeText.textContent = 'Pendaftaran Surat Keterangan Berbadan Sehat (SKBS) & Bebas Narkoba (SKBN)';
+                }
+
+                if (type === 'skbn') {
+                    // Sembunyikan data kesehatan dan hapus required
+                    healthDataCard.style.display = 'none';
+                    tinggiBadanInput.removeAttribute('required');
+                    beratBadanInput.removeAttribute('required');
+                } else {
+                    // Tampilkan data kesehatan dan tambahkan required
+                    healthDataCard.style.display = 'block';
+                    tinggiBadanInput.setAttribute('required', '');
+                    beratBadanInput.setAttribute('required', '');
+                }
+            }
+
+            // --- LOGIKA NAVIGASI MENU ---
+            function showSection(sectionToShow, menuLinkActive) {
+                // Sembunyikan semua section
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                // Tampilkan section yang dipilih
+                sectionToShow.classList.add('active');
+                
+                // Update active state di footer
+                document.querySelectorAll('footer nav a').forEach(link => link.classList.remove('active'));
+                menuLinkActive.classList.add('active');
+            }
+
+            berandaLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(berandaSection, berandaLink);
+            });
+
+            layananLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(layananSection, layananLink);
+            });
+
+            informasiLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection(informasiSection, informasiLink);
+            });
+
+            // --- EVENT LISTENER UNTUK TOMBOL PILIHAN DI BERANDA ---
+            daftarSkbsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                configureForm('skbs');
+                showSection(layananSection, layananLink);
+            });
+
+            daftarSkbnBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                configureForm('skbn');
+                showSection(layananSection, layananLink);
+            });
+
+            daftarKeduanyaBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                configureForm('skbs_skbn'); // Sama dengan SKBS
+                showSection(layananSection, layananLink);
+            });
+
+            // --- LOGIKA UPLOAD KTP (DIMODIFIKASI) ---
+            uploadArea.addEventListener('click', () => {
+                ktpUploadInput.click();
+            });
+            
+            uploadArea.addEventListener('dragover', (event) => {
+                event.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-color)';
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--border-color)';
+            });
+
+            uploadArea.addEventListener('drop', (event) => {
+                event.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-color)';
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    handleKtpUpload(files[0]);
+                }
+            });
+
+            ktpUploadInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    handleKtpUpload(file);
+                }
+            });
+
+            function handleKtpUpload(file) {
+                if (!file.type.startsWith('image/')) {
+                    showNotification('Harap unggah file gambar (JPG/PNG).', 'error');
+                    return;
+                }
+
+                // Simpan file untuk dikirim ke Telegram
+                ktpFile = file;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    ktpPreview.src = e.target.result;
+                    uploadResult.style.display = 'block';
+                    uploadArea.style.display = 'none';
+                    ktpUploadSection.classList.add('processing');
+                    
+                    uploadStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah foto...';
+                    uploadStatus.className = 'upload-status';
+
+                    // --- SIMULASI PROSES UPLOAD (TANPA OCR) ---
+                    setTimeout(() => {
+                        // Hapus bagian OCR, hanya tampilkan preview dan pesan sukses
+                        uploadStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Foto KTP berhasil diunggah. Silakan isi data Anda secara manual.';
+                        uploadStatus.className = 'upload-status success';
+                        ktpUploadSection.classList.remove('processing');
+                        
+                        showNotification('Foto KTP berhasil diunggah.', 'success');
+
+                    }, 1500); // Simulasi proses 1.5 detik
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // --- EVENT LISTENER UNTUK RESET FORM ---
+            resetBtn.addEventListener('click', function() {
+                // Reset form fields
+                form.reset();
+                
+                // Reset KTP upload area
+                uploadResult.style.display = 'none';
+                uploadArea.style.display = 'block';
+                
+                // Reset file KTP
+                ktpFile = null;
+                
+                // Reset submit button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Daftar';
+            });
+
+            // --- EVENT LISTENER UNTUK SUBMIT FORM ---
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+
+                // Kumpulkan data dari form
+                const formData = {
+                    jenisPendaftaran: registrationTypeText.textContent.replace('Pendaftaran ', ''),
+                    namaLengkap: document.getElementById('namaLengkapKtp').value,
+                    umur: document.getElementById('umur').value + ' Tahun',
+                    jenisKelamin: document.querySelector('input[name="jenisKelamin"]:checked').value,
+                    alamat: document.getElementById('alamat').value,
+                    pekerjaan: document.getElementById('pekerjaan').value,
+                    tinggiBadan: document.getElementById('tinggiBadan').value + ' cm',
+                    beratBadan: document.getElementById('beratBadan').value + ' kg',
+                    tujuanSurat: document.getElementById('tujuanSurat').value
+                };
+
+                try {
+                    // Kirim data ke Telegram
+                    const success = await sendToTelegram(formData);
+                    
+                    if (success) {
+                        // Tampilkan notifikasi dengan pesan yang diminta
+                        showNotification('Data terkirim dan pendaftar melanjutkan ke loket pendaftaran untuk pengambilan status serta ke tahap selanjutnya', 'success');
+                        
+                        // Reset form after successful submission
+                        form.reset();
+                        uploadResult.style.display = 'none';
+                        uploadArea.style.display = 'block';
+                        ktpFile = null;
                     } else {
-                        showToast('File JSON tidak valid. Harap gunakan file yang diekspor dari aplikasi ini.', 'danger');
+                        showNotification('Terjadi kesalahan saat mengirim data. Silakan coba lagi.', 'error');
                     }
                 } catch (error) {
-                    showToast('Gagal membaca file JSON. Pastikan formatnya benar.', 'danger');
+                    showNotification('Terjadi kesalahan jaringan. Silakan coba lagi.', 'error');
+                } finally {
+                    // Reset submit button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Daftar';
                 }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        function clearAllEmployeeData() {
-            if (confirm('PERINGATAN: Ini akan menghapus SEMUA data pegawai secara permanen dan tidak dapat dibatalkan. Apakah Anda yakin?')) {
-                if (confirm('Konfirmasi terakhir: Apakah Anda benar-benar yakin ingin menghapus semua data?')) {
-                    localStorage.removeItem(storageKey);
-                    showToast('Semua data pegawai telah dihapus.', 'danger');
-                    showEmployeeList(); // Kembali ke daftar dan refresh tampilan
-                }
-            }
-        }
-
-        // --- MODAL MANAGEMENT ---
-        function showAddEmployeeModal() {
-            document.getElementById('modalEmployeeNameInput').value = '';
-            renderChecklist('checklist-modal', null, true); // Render checklist kosong untuk modal
-            addEmployeeModal.show();
-        }
-
-        function saveNewEmployee() {
-            const name = document.getElementById('modalEmployeeNameInput').value.trim();
-            if (!name) {
-                alert('Nama pegawai harus diisi.');
-                return;
-            }
-
-            const newEmployeeChecks = {};
-            document.querySelectorAll('#checklist-modal input[type="checkbox"]').forEach((checkbox, index) => {
-                newEmployeeChecks[`check${index + 1}`] = checkbox.checked;
             });
-
-            const newEmployee = {
-                id: generateUniqueId(),
-                employeeName: name,
-                checks: newEmployeeChecks
-            };
-
-            const employees = getAllEmployees();
-            employees.push(newEmployee);
-            saveAllEmployees(employees);
-
-            addEmployeeModal.hide();
-            showToast('Pegawai baru berhasil ditambahkan.', 'success');
-            renderEmployeeList();
-        }
-
-        function showSummaryModal() {
-            if (!currentEmployeeId) return;
-            renderSummaryModalContent();
-            summaryModal.show();
-        }
-
-        function showToast(message, type = 'success') {
-            const toastEl = document.getElementById('saveNotificationToast');
-            const toastBody = toastEl.querySelector('.toast-body');
-            const iconClass = type === 'success' ? 'check-circle' : (type === 'danger' ? 'exclamation-triangle' : (type === 'info' ? 'info-circle' : 'exclamation-circle'));
-            const textClass = type === 'success' ? 'success' : (type === 'danger' ? 'danger' : (type === 'info' ? 'info' : 'warning'));
-            toastBody.innerHTML = `<i class="bi bi-${iconClass}-fill text-${textClass} me-2"></i> ${message}`;
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-        }
-
-        // --- INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mengosongkan semua data pegawai saat halaman dimuat
-            localStorage.removeItem(storageKey);
-            
-            saveNotificationToast = new bootstrap.Toast(document.getElementById('saveNotificationToast'));
-            addEmployeeModal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
-            summaryModal = new bootstrap.Modal(document.getElementById('summaryModal'));
-            
-            renderEmployeeList();
         });
     </script>
+
 </body>
 </html>
